@@ -15,10 +15,10 @@
         
         .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
         
-        /* Grid Layout สำหรับการ์ด */
+        /* Grid Layout */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Auto Responsive Grid */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
 
@@ -86,7 +86,13 @@
 </div>
 
 <script>
-    // Copy script language toggle from index.html if needed
+    let isTH = true;
+    function toggleLang() {
+        isTH = !isTH;
+        document.querySelectorAll('[data-th]').forEach(el => {
+            el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+        });
+    }
 </script>
 
 </body>
