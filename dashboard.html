@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard พี่เลี้ยง</title>
+    <title>Dashboard พี่เลี้ยง (Demo)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <style>
@@ -12,51 +12,48 @@
 
         /* --- Header --- */
         .header { background: var(--dark); padding: 25px 20px 40px; color: white; border-radius: 0 0 30px 30px; display: flex; align-items: center; gap: 15px; position: relative; }
-        .profile-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid white; object-fit: cover; }
+        .profile-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid white; object-fit: cover; transition: 0.3s; }
         .user-info h2 { margin: 0; font-size: 1.2rem; }
         .user-info p { margin: 0; font-size: 0.9rem; opacity: 0.8; }
         
         /* --- Container --- */
         .container { padding: 0 20px; max-width: 600px; margin: -30px auto 0; position: relative; }
 
-        /* --- Status Toggle (ปุ่มเปิดปิดงาน) --- */
-        .status-card { background: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        /* --- ปุ่มสวิตช์เปิด-ปิดงาน (Toggle) --- */
+        .status-card { background: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; transition: 0.3s; }
         .toggle-switch { position: relative; width: 50px; height: 26px; border-radius: 20px; background: var(--grey); cursor: pointer; transition: 0.3s; }
         .toggle-switch::after { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
-        /* Active State */
+        /* สถานะเปิด (Active) */
         .toggle-switch.active { background: var(--success); }
         .toggle-switch.active::after { left: 26px; }
+        .status-on { border-left: 5px solid var(--success); } /* แถบสีเขียวข้างการ์ด */
 
         /* --- Stats Grid --- */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .stat-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
+        .stat-card.updated { transform: scale(1.05); background: #e0f7fa; } /* เอฟเฟกต์ตอนค่าเปลี่ยน */
         .stat-card h3 { margin: 0; font-size: 1.8rem; color: var(--primary); }
         .stat-card p { margin: 5px 0 0; color: #666; font-size: 0.9rem; }
 
-        /* --- House Gallery (รูปบ้าน) --- */
-        .gallery-section { margin-bottom: 20px; }
-        .section-title { font-size: 1rem; font-weight: bold; margin-bottom: 10px; color: #444; }
-        .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
-        .gallery-img { width: 120px; height: 90px; border-radius: 10px; object-fit: cover; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
-        /* --- Job Request (งานเข้า) --- */
-        .job-card { background: white; border-radius: 15px; padding: 20px; border-left: 5px solid var(--danger); box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; animation: slideUp 0.5s; }
-        .btn-accept { width: 100%; background: var(--success); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 1rem; }
-        .btn-accept:active { transform: scale(0.98); }
-
-        /* --- Menu List --- */
-        .menu-list { background: white; border-radius: 15px; margin-top: 20px; overflow: hidden; }
-        .menu-item { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; color: #333; text-decoration: none; }
+        /* --- Job Alert Card (การ์ดงานเด้ง) --- */
+        .job-card { background: white; border-radius: 15px; padding: 20px; border-left: 5px solid var(--danger); box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; margin-bottom: 20px; animation: slideUp 0.5s; }
+        .btn-accept { width: 100%; background: var(--success); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-accept:active { transform: scale(0.95); }
 
         /* --- Modal (หน้าต่างแก้ไข) --- */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 90%; max-width: 400px; padding: 25px; border-radius: 20px; position: relative; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; animation: fadeIn 0.2s; }
+        .modal-content { background: white; width: 85%; max-width: 400px; padding: 25px; border-radius: 20px; position: relative; animation: popIn 0.3s; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: 'Kanit'; }
         .btn-save { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; }
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; }
+
+        /* Menu List */
+        .menu-list { background: white; border-radius: 15px; overflow: hidden; }
+        .menu-item { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; color: #333; text-decoration: none; }
+        .menu-item:active { background: #f5f5f5; }
 
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; }
@@ -64,44 +61,26 @@
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
 
+        /* Animations */
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { transform: scale(0.8); } to { transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img id="displayImg" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="profile-img">
+        <img id="displayImg" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" class="profile-img">
         <div class="user-info">
-            <h2 id="displayName">พี่เลี้ยง (Guest)</h2>
+            <h2 id="displayName">พี่จอย (Joy)</h2>
             <p><i class="fas fa-map-marker-alt"></i> <span id="displayLoc">กรุงเทพฯ</span></p>
         </div>
     </div>
 
     <div class="container">
-        <div class="status-card">
+        <div class="status-card" id="statusCard">
             <span id="statusText" style="font-weight:bold; color:var(--grey);">🔴 ปิดรับงาน</span>
-            <div class="toggle-switch" id="statusSwitch" onclick="toggleStatus()"></div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3 id="jobCount">0</h3>
-                <p>งานที่ทำสำเร็จ</p>
-            </div>
-            <div class="stat-card">
-                <h3>฿<span id="incomeCount">0</span></h3>
-                <p>รายได้รวม</p>
-            </div>
-        </div>
-
-        <div class="gallery-section">
-            <div class="section-title">🏠 พื้นที่รับเลี้ยงและบ้านของฉัน</div>
-            <div class="gallery-scroll">
-                <img src="https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&w=200&q=80" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1599388174483-e02fb8052140?auto=format&fit=crop&w=200&q=80" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=200&q=80" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7c1f?auto=format&fit=crop&w=200&q=80" class="gallery-img">
-            </div>
+            <div class="toggle-switch" id="statusSwitch" onclick="demoToggle()"></div>
         </div>
 
         <div class="job-card" id="jobAlert">
@@ -112,19 +91,30 @@
             <div style="display:flex; gap:10px; align-items:center; background:#f9f9f9; padding:10px; border-radius:10px;">
                 <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=100&q=80" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
                 <div>
-                    <div>น้องกะทิ (Beagle)</div>
+                    <div>น้องไข่ตุ๋น (Bulldog)</div>
                     <div style="color:var(--primary); font-weight:bold;">ค่าตอบแทน ฿800</div>
                 </div>
             </div>
-            <button class="btn-accept" onclick="acceptJob()">✅ รับงานทันที</button>
+            <button class="btn-accept" onclick="demoAcceptJob()">✅ รับงานทันที</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card" id="cardJobs">
+                <h3 id="jobCount">0</h3>
+                <p>งานที่ทำสำเร็จ</p>
+            </div>
+            <div class="stat-card" id="cardIncome">
+                <h3>฿<span id="incomeCount">0</span></h3>
+                <p>รายได้รวม</p>
+            </div>
         </div>
 
         <div class="menu-list">
-            <div class="menu-item" onclick="openEditModal()">
+            <div class="menu-item" onclick="openModal()">
                 <span><i class="fas fa-edit" style="color:var(--primary); width:25px;"></i> แก้ไขโปรไฟล์</span>
                 <i class="fas fa-chevron-right" style="color:#ccc;"></i>
             </div>
-            <div class="menu-item">
+            <div class="menu-item" onclick="Swal.fire('เมนูนี้ยังไม่เปิดใช้งาน', 'ในเวอร์ชัน Demo', 'info')">
                 <span><i class="fas fa-history" style="color:var(--success); width:25px;"></i> ประวัติการทำงาน</span>
                 <i class="fas fa-chevron-right" style="color:#ccc;"></i>
             </div>
@@ -136,25 +126,25 @@
 
     <div class="modal" id="editModal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeEditModal()">&times;</span>
-            <h3 style="margin-top:0;">✏️ แก้ไขข้อมูลส่วนตัว</h3>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 style="margin-top:0;">✏️ แก้ไขข้อมูล</h3>
             
             <div class="form-group">
                 <label>ชื่อที่ใช้แสดง</label>
-                <input type="text" id="inputName" placeholder="เช่น พี่จอย รักสัตว์">
+                <input type="text" id="inputName" value="พี่จอย (Joy)">
             </div>
             <div class="form-group">
-                <label>สถานที่/เขต</label>
-                <input type="text" id="inputLoc" placeholder="เช่น ลาดพร้าว">
+                <label>สถานที่</label>
+                <input type="text" id="inputLoc" value="กรุงเทพฯ">
             </div>
             <div class="form-group">
-                <label>อัปโหลดรูปบ้าน (เพิ่มรูป)</label>
-                <button style="width:100%; padding:10px; border:1px dashed #ccc; background:white; color:#666; border-radius:8px;" onclick="Swal.fire('จำลองการอัปโหลด', 'ระบบจะเปิดคลังภาพในเครื่อง', 'info')">
-                    <i class="fas fa-camera"></i> เลือกรูปภาพ
+                <label>เปลี่ยนรูปโปรไฟล์</label>
+                <button onclick="demoUpload()" style="width:100%; padding:10px; border:1px dashed #ccc; background:white; color:#666; border-radius:8px;">
+                    <i class="fas fa-camera"></i> จิ้มเพื่อเปลี่ยนรูป
                 </button>
             </div>
             
-            <button class="btn-save" onclick="saveProfile()">บันทึกข้อมูล</button>
+            <button class="btn-save" onclick="demoSaveProfile()">บันทึกข้อมูล</button>
         </div>
     </div>
 
@@ -164,152 +154,112 @@
         <a href="#" class="nav-item"><i class="fas fa-comment-dots"></i> แชท</a>
     </div>
 
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        // --- 1. โหลดข้อมูลเมื่อเปิดหน้าเว็บ ---
-        document.addEventListener("DOMContentLoaded", function() {
-            loadProfile(); // ดึงข้อมูลชื่อ/สถานะจากความจำเครื่อง
-            
-            // จำลองงานเด้งเข้า (ถ้าสถานะเปิดอยู่)
-            setTimeout(() => {
-                if(localStorage.getItem('isOnline') === 'true') {
-                    document.getElementById('jobAlert').style.display = 'block';
-                    // สั่นเตือน
-                    if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1500);
-
-            // เริ่มต้น LIFF (เพื่อดึงรูปโปรไฟล์จริงถ้ามี)
-            initializeLiff();
-        });
-
-        // --- 2. ฟังก์ชันเปิด-ปิดรับงาน (จำสถานะได้จริง) ---
-        function toggleStatus() {
+        // --- 1. ฟังก์ชันกดปุ่มเปิด-ปิดงาน ---
+        function demoToggle() {
             const btn = document.getElementById('statusSwitch');
             const txt = document.getElementById('statusText');
-            
+            const card = document.getElementById('statusCard');
+            const jobCard = document.getElementById('jobAlert');
+
+            // สลับ Class active
             btn.classList.toggle('active');
-            
+
             if (btn.classList.contains('active')) {
+                // ถ้าเปิด (สีเขียว)
                 txt.innerHTML = '<span style="color:var(--success)">🟢 เปิดรับงานอยู่</span>';
-                localStorage.setItem('isOnline', 'true');
+                card.classList.add('status-on');
                 
-                // แจ้งเตือนสวยๆ
+                // Demo: ให้งานเด้งเข้ามาอัตโนมัติใน 1.5 วินาที
                 Swal.fire({
                     icon: 'success',
                     title: 'เปิดระบบแล้ว',
-                    text: 'คุณพร้อมรับงาน! ระบบจะแจ้งเตือนเมื่อมีลูกค้า',
-                    timer: 1500,
+                    text: 'รอลูกค้าสักครู่นะครับ...',
+                    timer: 1000,
                     showConfirmButton: false
                 });
+
+                setTimeout(() => {
+                    jobCard.style.display = 'block'; // โชว์การ์ดงาน
+                    if(navigator.vibrate) navigator.vibrate([200]); // สั่น
+                }, 1500);
+
             } else {
+                // ถ้าปิด (สีแดง)
                 txt.innerHTML = '<span style="color:var(--grey)">🔴 ปิดรับงาน</span>';
-                localStorage.setItem('isOnline', 'false');
-                document.getElementById('jobAlert').style.display = 'none'; // ซ่อนงานถ้าปิด
+                card.classList.remove('status-on');
+                jobCard.style.display = 'none'; // ซ่อนการ์ดงาน
             }
         }
 
-        // --- 3. ฟังก์ชันรับงาน (กดแล้วส่งไลน์จริง) ---
-        async function acceptJob() {
-            // ซ่อนการ์ดงาน
-            document.getElementById('jobAlert').style.display = 'none';
-            
-            // เพิ่มตัวเลขงานและรายได้ (จำลอง)
-            let jobs = parseInt(document.getElementById('jobCount').innerText) + 1;
-            let income = parseInt(document.getElementById('incomeCount').innerText) + 800;
-            document.getElementById('jobCount').innerText = jobs;
-            document.getElementById('incomeCount').innerText = income;
+        // --- 2. ฟังก์ชันกดรับงาน ---
+        function demoAcceptJob() {
+            const jobCard = document.getElementById('jobAlert');
+            const jobCount = document.getElementById('jobCount');
+            const incomeCount = document.getElementById('incomeCount');
+            const card1 = document.getElementById('cardJobs');
+            const card2 = document.getElementById('cardIncome');
 
-            // แจ้งเตือนว่ารับงานแล้ว
+            // 1. ซ่อนการ์ดงาน
+            jobCard.style.display = 'none';
+
+            // 2. แจ้งเตือนสำเร็จ
             Swal.fire({
                 icon: 'success',
                 title: 'รับงานสำเร็จ!',
-                text: 'กำลังส่งข้อมูลยืนยันไปยังห้องแชท...',
+                text: 'รายได้เข้ากระเป๋าแล้ว ฿800',
                 showConfirmButton: false,
-                timer: 2000
+                timer: 1500
             });
 
-            // *** ทีเด็ด: ส่งข้อความเข้า LINE Chat จริงๆ ***
-            // (ต้องเปิดหน้านี้ผ่าน LIFF ถึงจะทำงาน)
-            if (liff.isInClient()) {
-                try {
-                    await liff.sendMessages([
-                        {
-                            type: 'text',
-                            text: '✅ ฉันกดรับงาน "น้องกะทิ" แล้วนะ! \nพร้อมเริ่มงานตามเวลาที่นัดหมายครับ'
-                        },
-                        {
-                            type: 'sticker',
-                            packageId: '446',
-                            stickerId: '1988'
-                        }
-                    ]);
-                    console.log('Message sent');
-                } catch (err) {
-                    console.log('Error sending message:', err);
-                }
-            }
+            // 3. อัปเดตตัวเลข (เพิ่มค่า)
+            let jobs = parseInt(jobCount.innerText);
+            let income = parseInt(incomeCount.innerText);
+
+            jobCount.innerText = jobs + 1;
+            incomeCount.innerText = income + 800;
+
+            // 4. ทำเอฟเฟกต์กระพริบที่การ์ดสถิติ
+            card1.classList.add('updated');
+            card2.classList.add('updated');
+            setTimeout(() => {
+                card1.classList.remove('updated');
+                card2.classList.remove('updated');
+            }, 300);
         }
 
-        // --- 4. ระบบแก้ไขโปรไฟล์ (บันทึกได้จริง) ---
-        function loadProfile() {
-            // ดึงข้อมูลจาก LocalStorage
-            const savedName = localStorage.getItem('sitterName');
-            const savedLoc = localStorage.getItem('sitterLoc');
-            const isOnline = localStorage.getItem('isOnline');
-
-            if(savedName) document.getElementById('displayName').innerText = savedName;
-            if(savedLoc) document.getElementById('displayLoc').innerText = savedLoc;
-
-            // คืนค่าสถานะเปิด-ปิดงาน
-            if(isOnline === 'true') {
-                document.getElementById('statusSwitch').classList.add('active');
-                document.getElementById('statusText').innerHTML = '<span style="color:var(--success)">🟢 เปิดรับงานอยู่</span>';
-            }
-        }
-
-        function saveProfile() {
-            const name = document.getElementById('inputName').value;
-            const loc = document.getElementById('inputLoc').value;
-
-            if(name) {
-                document.getElementById('displayName').innerText = name;
-                localStorage.setItem('sitterName', name);
-            }
-            if(loc) {
-                document.getElementById('displayLoc').innerText = loc;
-                localStorage.setItem('sitterLoc', loc);
-            }
-
-            closeEditModal();
-            Swal.fire('บันทึกสำเร็จ', 'ข้อมูลของคุณอัปเดตแล้ว', 'success');
-        }
-
-        function openEditModal() {
+        // --- 3. ฟังก์ชันแก้ไขโปรไฟล์ ---
+        function openModal() {
             document.getElementById('editModal').style.display = 'flex';
-            // ใส่ค่าเดิมลงในช่อง
-            document.getElementById('inputName').value = document.getElementById('displayName').innerText;
         }
-
-        function closeEditModal() {
+        function closeModal() {
             document.getElementById('editModal').style.display = 'none';
         }
 
-        // --- LIFF Init ---
-        async function initializeLiff() {
-            try {
-                await liff.init({ liffId: "2008873687-FSXDQJEA" }); // ใส่ ID เดิมของคุณ
-                if (liff.isLoggedIn()) {
-                    const profile = await liff.getProfile();
-                    // ถ้ายังไม่ได้ตั้งชื่อเอง ให้ใช้ชื่อไลน์
-                    if(!localStorage.getItem('sitterName')) {
-                        document.getElementById('displayName').innerText = profile.displayName;
-                    }
-                    document.getElementById('displayImg').src = profile.pictureUrl;
-                }
-            } catch (err) {
-                console.error(err);
-            }
+        // กดปุ่มเปลี่ยนรูป (จำลอง)
+        function demoUpload() {
+            Swal.fire({
+                title: 'อัปโหลดรูปภาพ',
+                text: 'จำลองการเลือกรูปจากเครื่อง...',
+                timer: 1000,
+                showConfirmButton: false
+            }).then(() => {
+                // เปลี่ยนรูปเป็นรูปผู้ชาย เพื่อให้เห็นว่าเปลี่ยนจริง
+                document.getElementById('displayImg').src = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80';
+            });
+        }
+
+        // กดบันทึก
+        function demoSaveProfile() {
+            const newName = document.getElementById('inputName').value;
+            const newLoc = document.getElementById('inputLoc').value;
+
+            // อัปเดตข้อความหน้าหลักทันที
+            document.getElementById('displayName').innerText = newName;
+            document.getElementById('displayLoc').innerText = newLoc;
+
+            closeModal();
+            Swal.fire('บันทึกข้อมูลแล้ว', 'หน้าจออัปเดตเรียบร้อยครับ', 'success');
         }
     </script>
 </body>
