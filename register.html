@@ -40,12 +40,12 @@
     <h2 data-th="สร้างรายได้จากที่บ้าน" data-en="Earn Money from Home">สร้างรายได้จากที่บ้าน</h2>
     <p data-th="สมัครเป็นพี่เลี้ยง กำหนดราคาและเวลาเองได้" data-en="Become a sitter. Set your own rates & schedule.">สมัครเป็นพี่เลี้ยง กำหนดราคาและเวลาเองได้</p>
     
-<a href="https://liff.line.me/2008873687-FSXDQJEA" style="text-decoration: none; width: 100%;">
-    <button class="btn-social btn-line">
-        <i class="fab fa-line" style="font-size: 1.5rem;"></i> 
-        <span data-th="สมัครด้วย LINE" data-en="Continue with LINE">สมัครด้วย LINE</span>
-    </button>
-</a>
+    <a href="https://liff.line.me/2008873687-FSXDQJEA" style="text-decoration: none; width: 100%;">
+        <button class="btn-social btn-line">
+            <i class="fab fa-line" style="font-size: 1.5rem;"></i> 
+            <span data-th="สมัครด้วย LINE" data-en="Continue with LINE">สมัครด้วย LINE</span>
+        </button>
+    </a>
     
     <button class="btn-social btn-email" onclick="alert('เปิดฟอร์ม Email...')">
         <i class="fas fa-envelope"></i> 
@@ -66,9 +66,14 @@
 </div>
 
 <script>
-    // ใส่ Script สลับภาษา (Copy จาก index.html) เพื่อให้หน้านี้สลับภาษาได้ด้วย
     let isTH = true;
-    function toggleLang() { /* ... */ }
+    function toggleLang() {
+        isTH = !isTH;
+        document.querySelectorAll('[data-th]').forEach(el => {
+            el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+            if(el.placeholder) el.placeholder = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+        });
+    }
 </script>
 
 </body>
