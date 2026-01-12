@@ -51,9 +51,9 @@
             flex: 0 0 auto; margin-top: auto; height: 48px; font-weight: 500;
         }
 
-        /* --- RESPONSIVE MEDIA QUERIES --- */
+        /* Responsive */
         @media (max-width: 768px) {
-            .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); text-align: center; }
+            .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); text-align: center; box-sizing: border-box; }
             .nav-links.active { display: flex; }
             .hamburger { display: block; }
             .hero h1 { font-size: 2rem; }
@@ -99,12 +99,11 @@
 </div>
 
 <script>
-    // Script สลับภาษา (ใช้ร่วมกันได้ทุกไฟล์)
     let isTH = true;
     function toggleLang() {
         isTH = !isTH;
-        document.getElementById('l-th').classList.toggle('active');
-        document.getElementById('l-en').classList.toggle('active');
+        if(document.getElementById('l-th')) document.getElementById('l-th').classList.toggle('active');
+        if(document.getElementById('l-en')) document.getElementById('l-en').classList.toggle('active');
         
         document.querySelectorAll('[data-th]').forEach(el => {
             el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
