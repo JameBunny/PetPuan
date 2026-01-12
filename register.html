@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #FF9F1C; --line: #06C755; }
+        :root { --primary: #FF9F1C; --line: #06C755; --dark-line: #05a545; }
         body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         
         .card { background: white; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center; position: relative; }
@@ -24,19 +24,21 @@
         }
         .btn-social:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         
+        /* ปุ่ม Login หลัก (สีเขียวปกติ) */
         .btn-line { background: var(--line); color: white; }
-        .btn-email { background: #333; color: white; }
+        
+        /* ✅ ปุ่มแจ้งเตือน (สีเขียวเข้ม หรือสีเทาเข้มเพื่อให้ต่างกัน) */
+        .btn-noti { background: #333; color: white; border: 1px solid #333; }
+        .btn-noti:hover { background: #000; }
         
         .divider { margin: 25px 0; border-top: 1px solid #eee; position: relative; }
         .divider span { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #999; font-size: 0.8rem; }
         
         .security-box { background: #E8F5E9; color: #2E7D32; padding: 15px; border-radius: 10px; font-size: 0.85rem; margin-top: 20px; text-align: left; display: flex; gap: 10px; }
 
-        /* ✅ เพิ่มสไตล์ปุ่มสลับภาษา */
         .lang-switch { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 0.9rem; color: #999; border: 1px solid #ddd; padding: 5px 10px; border-radius: 20px; }
         .lang-switch span.active { color: var(--primary); font-weight: bold; }
 
-        /* ✅ เพิ่มสไตล์ Footer เล็กๆ */
         .footer-small { margin-top: 20px; color: #999; font-size: 0.8rem; }
     </style>
 </head>
@@ -58,14 +60,16 @@
         </button>
     </a>
     
-    <button class="btn-social btn-email" onclick="alert('เปิดฟอร์ม Email...')">
-        <i class="fas fa-envelope"></i> 
-        <span data-th="สมัครด้วย Email" data-en="Continue with Email">สมัครด้วย Email</span>
-    </button>
-    
     <div class="divider"><span data-th="หรือ" data-en="OR">หรือ</span></div>
+
+    <a href="https://lin.ee/a0EH1Qz" target="_blank" style="text-decoration: none; width: 100%;">
+        <button class="btn-social btn-noti">
+            <i class="fas fa-bell"></i> 
+            <span data-th="รับการแจ้งเตือนงานใหม่ (Add Friend)" data-en="Get Job Alerts (Add Friend)">รับการแจ้งเตือนงานใหม่ (Add Friend)</span>
+        </button>
+    </a>
     
-    <div style="text-align: left; font-size: 0.9rem; color: #555; line-height: 1.6;">
+    <div style="margin-top: 20px; text-align: left; font-size: 0.9rem; color: #555; line-height: 1.6;">
         ✅ <strong data-th="ยืนยันตัวตน" data-en="Identity Verify">ยืนยันตัวตน</strong> (ID Card)<br>
         ✅ <strong data-th="ตรวจสอบที่พัก" data-en="Home Check">ตรวจสอบที่พัก</strong> (Photo Check)
     </div>
@@ -84,11 +88,9 @@
     let isTH = true;
     function toggleLang() {
         isTH = !isTH;
-        // สลับสีตัวหนังสือปุ่ม
         if(document.getElementById('l-th')) document.getElementById('l-th').classList.toggle('active');
         if(document.getElementById('l-en')) document.getElementById('l-en').classList.toggle('active');
 
-        // สลับภาษาเนื้อหา
         document.querySelectorAll('[data-th]').forEach(el => {
             el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
             if(el.placeholder) el.placeholder = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
