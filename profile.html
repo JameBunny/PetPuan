@@ -3,87 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรไฟล์ - PetPuan</title>
+    <title>โปรไฟล์พี่จอย - PetPuan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #FF9F1C; --dark: #2B2D42; }
-        body { font-family: 'Kanit', sans-serif; background: #f5f7fa; margin: 0; padding-bottom: 90px; }
+        :root { --primary: #FF9F1C; --secondary: #2EC4B6; --dark: #2B2D42; --light: #F8F9FA; }
+        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 100px; }
         
-        .cover { height: 250px; background-image: url('https://images.unsplash.com/photo-1444212477490-ca407925329e?auto=format&fit=crop&w=1000&q=80'); background-size: cover; background-position: center; }
+        /* Cover & Profile Header */
+        .cover { height: 220px; background-image: url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1000&q=80'); background-size: cover; background-position: center; position: relative; }
+        .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; }
         
-        .container { max-width: 800px; margin: -60px auto 0; padding: 20px; position: relative; }
+        .container { max-width: 800px; margin: -60px auto 0; padding: 0 20px; position: relative; }
         
-        .profile-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-        .avatar { width: 140px; height: 140px; border-radius: 50%; border: 6px solid white; margin-top: -100px; object-fit: cover; background: #ddd; }
+        .profile-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; position: relative; }
+        .avatar { width: 130px; height: 130px; border-radius: 50%; border: 5px solid white; margin-top: -90px; object-fit: cover; background: #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         
-        .badge { background: #e3f2fd; color: #1da1f2; padding: 6px 15px; border-radius: 20px; font-size: 0.9rem; margin: 10px auto; display: inline-flex; align-items: center; gap: 5px; width: fit-content; }
+        .verified-badge { background: #E3F2FD; color: #1DA1F2; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; }
         
-        .details-box { background: white; margin-top: 20px; padding: 25px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .details-box h3 { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        /* Section Styling */
+        .section-box { background: white; margin-top: 15px; padding: 20px; border-radius: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .section-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: var(--dark); display: flex; align-items: center; gap: 8px; }
         
-        /* Sticky Booking Footer */
-        .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: white; padding: 15px 20px; 
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); 
-            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; 
-            z-index: 999;
-        }
-        .price-total { font-size: 1.3rem; font-weight: bold; color: var(--primary); }
-        .btn-book { background: var(--primary); color: white; border: none; padding: 12px 40px; border-radius: 50px; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: 0.2s; }
-        .btn-book:active { transform: scale(0.95); }
+        /* 🏠 Gallery (รูปบ้าน) */
+        .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .gallery-scroll::-webkit-scrollbar { display: none; }
+        .house-img { width: 160px; height: 110px; border-radius: 10px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+        
+        /* 🛠️ Services List */
+        .service-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 12px 0; }
+        .service-item:last-child { border-bottom: none; }
+        .service-name { font-weight: 500; display: flex; flex-direction: column; }
+        .service-desc { font-size: 0.8rem; color: #888; }
+        .service-price { color: var(--primary); font-weight: bold; font-size: 1.1rem; }
 
-        @media (max-width: 600px) { .cover { height: 180px; } .avatar { width: 120px; height: 120px; } }
+        /* 💬 Reviews */
+        .rating-summary { background: #f9f9f9; padding: 15px; border-radius: 10px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .big-score { font-size: 2.5rem; font-weight: bold; color: var(--dark); line-height: 1; }
+        .review-card { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .reviewer-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .star-row { color: #FFC107; font-size: 0.8rem; }
+        .review-text { font-size: 0.9rem; color: #555; line-height: 1.5; }
+        .review-date { font-size: 0.8rem; color: #aaa; }
+
+        /* Sticky Footer */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 100; }
+        .btn-book { background: var(--primary); color: white; border: none; padding: 12px 40px; border-radius: 50px; font-size: 1.1rem; font-weight: 500; cursor: pointer; width: 100%; }
+        
+        /* Tags */
+        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
+        .tag { background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; color: #555; }
     </style>
 </head>
 <body>
 
-<div class="cover"></div>
+<div class="cover">
+    <a href="search.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+</div>
 
 <div class="container">
     <div class="profile-card">
         <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" class="avatar">
-        <h2 style="margin: 10px 0;">พี่จอย (Joy)</h2>
-        <div class="badge"><i class="fas fa-check-circle"></i> Verified Pro</div>
-        <p style="color:#666;">⭐⭐⭐⭐⭐ 4.9 (85 Reviews) | 📍 2.5 km away</p>
-    </div>
-
-    <div class="details-box">
-        <h3 data-th="เกี่ยวกับสถานที่" data-en="About Location">เกี่ยวกับสถานที่</h3>
-        <p style="line-height: 1.8;">
-            ✅ <span data-th="บ้านเดี่ยว มีรั้วรอบขอบชิด" data-en="Single house with fence">บ้านเดี่ยว มีรั้วรอบขอบชิด</span><br>
-            ✅ <span data-th="มีสนามหญ้าวิ่งเล่น" data-en="Private backyard">มีสนามหญ้าวิ่งเล่น</span><br>
-            ✅ <span data-th="นอนในห้องแอร์" data-en="Air-conditioned room">นอนในห้องแอร์</span>
-        </p>
-    </div>
-
-    <div class="details-box">
-        <h3 data-th="รีวิวจากลูกค้า" data-en="Reviews">รีวิวจากลูกค้า</h3>
-        <div style="margin-bottom: 15px;">
-            <strong>คุณเมย์</strong> ⭐⭐⭐⭐⭐
-            <p style="color:#555; font-style: italic;">"พี่จอยน่ารักมาก ส่งรูปให้ดูตลอด หายห่วงเลยค่ะ"</p>
+        <h2 style="margin: 10px 0 5px;">พี่จอย (Joy)</h2>
+        <div class="verified-badge"><i class="fas fa-check-circle"></i> ยืนยันตัวตนแล้ว (Verified Pro)</div>
+        
+        <div class="tag-container">
+            <span class="tag">🐶 รับสุนัขทุกสายพันธุ์</span>
+            <span class="tag">🏡 บ้านเดี่ยว</span>
+            <span class="tag">❄️ ห้องแอร์</span>
+            <span class="tag">💊 ป้อนยาได้</span>
         </div>
+
+        <div style="margin-top: 15px; color:#666; font-size:0.9rem;">
+            "รักสัตว์เหมือนลูกตัวเองค่ะ ที่บ้านมีพื้นที่กว้างขวาง ปลอดภัยแน่นอน ประสบการณ์เลี้ยงมา 5 ปีครับ"
+        </div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title"><i class="fas fa-home"></i> รูปสถานที่ & บรรยากาศ</div>
+        <p style="font-size:0.8rem; color:#888; margin-top:-10px; margin-bottom:10px;">คลิกที่รูปเพื่อดูภาพขยาย</p>
+        
+        <div class="gallery-scroll">
+            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=300&q=80" class="house-img" onclick="alert('รูปหน้าบ้าน: รั้วรอบขอบชิด ปลอดภัย 100%')">
+            <img src="https://images.unsplash.com/photo-1558909612-e29f42fb66a4?auto=format&fit=crop&w=300&q=80" class="house-img" onclick="alert('รูปสนามหญ้า: วิ่งเล่นได้เต็มที่ หญ้านุ่ม')">
+            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=300&q=80" class="house-img" onclick="alert('รูปห้องนอน: นอนแอร์เย็นฉ่ำกับพี่เลี้ยง')">
+            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=300&q=80" class="house-img" onclick="alert('รูปกิจกรรม: พาเดินเล่นเช้า-เย็น')">
+        </div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title"><i class="fas fa-tags"></i> บริการและราคา</div>
+        
+        <div class="service-item">
+            <div class="service-name">
+                ฝากเลี้ยง (Boarding)
+                <span class="service-desc">ค้างคืน 24 ชม. • รวมอาหาร</span>
+            </div>
+            <div class="service-price">350฿ <span style="font-size:0.8rem; color:#888;">/คืน</span></div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-name">
+                รับฝากเลี้ยง (Day Care)
+                <span class="service-desc">ฝากเช้า-เย็นกลับ • ไม่ค้างคืน</span>
+            </div>
+            <div class="service-price">250฿ <span style="font-size:0.8rem; color:#888;">/วัน</span></div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-name">
+                พาเดินเล่น (Dog Walking)
+                <span class="service-desc">เดินสวนสาธารณะ 1 ชม.</span>
+            </div>
+            <div class="service-price">150฿ <span style="font-size:0.8rem; color:#888;">/ครั้ง</span></div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title"><i class="fas fa-star"></i> รีวิวจากลูกค้า (85)</div>
+        
+        <div class="rating-summary">
+            <div class="big-score">4.9</div>
+            <div style="font-size:0.8rem; color:#666;">
+                ⭐⭐⭐⭐⭐ (80)<br>
+                ⭐⭐⭐⭐ (5)<br>
+                คุณภาพยอดเยี่ยม
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="reviewer-header">
+                <strong>คุณเมย์</strong>
+                <span class="review-date">2 วันที่แล้ว</span>
+            </div>
+            <div class="star-row">⭐⭐⭐⭐⭐</div>
+            <p class="review-text">"พี่จอยน่ารักมากกก ส่งรูปน้องให้ดูตลอดเวลา น้องกลับมาบ้านร่าเริงมากค่ะ บ้านสะอาดมาก แนะนำเลย"</p>
+        </div>
+
+        <div class="review-card">
+            <div class="reviewer-header">
+                <strong>คุณแบงค์</strong>
+                <span class="review-date">1 สัปดาห์ที่แล้ว</span>
+            </div>
+            <div class="star-row">⭐⭐⭐⭐ <span style="color:#ccc;">⭐</span></div>
+            <p class="review-text">"ดูแลน้องดีครับ พาน้องไปเดินตามเวลาที่ตกลง แต่ขอหัก 1 ดาวตรงที่ตอบไลน์ช้าไปนิดนึงช่วงเย็นครับ"</p>
+        </div>
+
+        <div class="review-card">
+            <div class="reviewer-header">
+                <strong>คุณศิริพร</strong>
+                <span class="review-date">2 สัปดาห์ที่แล้ว</span>
+            </div>
+            <div class="star-row">⭐⭐⭐⭐⭐</div>
+            <p class="review-text">"ฝากรอบที่ 3 แล้ว ไว้ใจพี่จอยที่สุดค่ะ น้องหมาไม่เครียดเลย"</p>
+            <img src="https://images.unsplash.com/photo-1534361960057-19889db9621e?auto=format&fit=crop&w=100&q=80" style="width:60px; height:60px; border-radius:8px; margin-top:5px;">
+        </div>
+
     </div>
 </div>
 
 <div class="bottom-nav">
-    <div>
-        <div style="font-size:0.8rem; color:#666;" data-th="ราคาเริ่มต้น" data-en="Starting at">ราคาเริ่มต้น</div>
-        <div class="price-total">350฿ / <span data-th="คืน" data-en="night">คืน</span></div>
+    <div style="flex:1;">
+        <div style="font-size:0.8rem; color:#888;">ราคารวม</div>
+        <div style="font-size:1.2rem; font-weight:bold; color:var(--primary);">350฿</div>
     </div>
-    <button class="btn-book" onclick="alert('ระบบเปิด QR Code Payment...')" data-th="จองเลย" data-en="Book Now">จองเลย</button>
+    <button class="btn-book" onclick="alert('ระบบจะส่งคำขอจองไปที่ LINE พี่เลี้ยง...')">จองเลย</button>
 </div>
-
-<script>
-    let isTH = true;
-    function toggleLang() {
-        isTH = !isTH;
-        document.querySelectorAll('[data-th]').forEach(el => {
-            el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
-        });
-    }
-</script>
 
 </body>
 </html>
