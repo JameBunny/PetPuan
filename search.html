@@ -3,46 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetPuan - ค้นหา</title>
+    <title>ค้นหาพี่เลี้ยง - PetPuan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #FF9F1C; --verified: #1DA1F2; --light: #F8F9FA; }
-        body { font-family: 'Kanit', sans-serif; background: var(--light); margin: 0; }
+        :root { --primary: #FF9F1C; --secondary: #2EC4B6; --dark: #2B2D42; --light: #F8F9FA; --danger: #FF4757; }
+        body { font-family: 'Kanit', sans-serif; background: var(--light); margin: 0; padding-bottom: 50px; }
         
-        nav { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* Nav */
+        nav { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top:0; z-index:100; }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-decoration: none; }
         
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         
-        /* Grid Layout */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
+        /* --- Filter Section (แถบตัวกรอง) --- */
+        .filter-bar { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; align-items: end; }
+        .filter-group { flex: 1; min-width: 150px; }
+        .filter-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+        .filter-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Kanit'; }
+        .btn-filter { background: var(--secondary); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer; height: 42px; font-weight: bold; }
 
-        .sitter-card { 
-            background: white; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; 
-            display: flex; flex-direction: column;
-        }
+        /* --- Grid Layout --- */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+
+        /* --- Sitter Card --- */
+        .sitter-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; position: relative; display: flex; flex-direction: column; }
         .sitter-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         
-        .card-img { height: 180px; background-size: cover; background-position: center; position: relative; }
-        .price-badge { 
-            position: absolute; bottom: 10px; right: 10px; 
-            background: rgba(0,0,0,0.7); color: white; padding: 5px 15px; 
-            border-radius: 20px; font-weight: bold; 
-        }
+        .card-img-wrapper { position: relative; height: 200px; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
+        .price-badge { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; }
         
-        .card-body { padding: 20px; }
-        .sitter-name { font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; gap: 5px; margin: 0 0 5px 0; }
-        .verified { color: var(--verified); }
-        .stats { color: #666; font-size: 0.9rem; display: flex; gap: 10px; margin-bottom: 10px; }
-        .rating { color: #FFC107; }
+        .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .header-row { display: flex; justify-content: space-between; align-items: start; margin-bottom: 5px; }
+        .sitter-name { margin: 0; font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .verified-icon { color: #1DA1F2; font-size: 1rem; }
+        
+        .location-text { color: #888; font-size: 0.85rem; margin-bottom: 10px; display: block; }
+        
+        /* Rating Stars */
+        .rating-box { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; margin-bottom: 15px; }
+        .star-gold { color: #FFC107; }
+        .star-grey { color: #ddd; }
+        .review-count { color: #999; font-size: 0.8rem; }
 
-        @media (max-width: 600px) { .container { padding: 0 15px; } }
+        /* Tags (งานที่รับ) */
+        .tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: auto; }
+        .service-tag { font-size: 0.75rem; padding: 4px 10px; border-radius: 5px; background: #f0f2f5; color: #555; }
+        .service-tag.highlight { background: #e3f2fd; color: #1976d2; }
+
     </style>
 </head>
 <body>
@@ -52,47 +61,195 @@
 </nav>
 
 <div class="container">
-    <h2 data-th="ผลการค้นหา: ลาดพร้าว" data-en="Results: Ladprao">ผลการค้นหา: ลาดพร้าว</h2>
+    <h2 style="margin-bottom: 10px;">🔍 ค้นหาพี่เลี้ยง</h2>
     
-    <div class="card-grid">
-        <div class="sitter-card" onclick="window.location.href='profile.html'">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80');">
-                <div class="price-badge">350฿ / <span data-th="คืน" data-en="night">คืน</span></div>
-            </div>
-            <div class="card-body">
-                <h3 class="sitter-name">พี่จอย (Joy) <i class="fas fa-check-circle verified"></i></h3>
-                <div class="stats">
-                    <span><i class="fas fa-star rating"></i> 4.9 (85)</span>
-                    <span data-th="120 งานสำเร็จ" data-en="120 Jobs">120 งานสำเร็จ</span>
-                </div>
-                <p style="color:#555; font-size:0.9rem;" data-th="มีสนามหญ้า ดูแล 24 ชม." data-en="Has backyard, 24hr care">มีสนามหญ้า ดูแล 24 ชม.</p>
-            </div>
+    <div class="filter-bar">
+        <div class="filter-group">
+            <label>📍 เลือกพื้นที่ (Location)</label>
+            <select id="locFilter" onchange="applyFilter()">
+                <option value="all">ทั้งหมด (All Areas)</option>
+                <option value="ลาดพร้าว">ลาดพร้าว (Ladprao)</option>
+                <option value="สยาม">สยาม (Siam)</option>
+                <option value="บางนา">บางนา (Bangna)</option>
+                <option value="จตุจักร">จตุจักร (Chatuchak)</option>
+            </select>
         </div>
-
-        <div class="sitter-card" onclick="window.location.href='profile.html'">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80');">
-                <div class="price-badge">250฿ / <span data-th="คืน" data-en="night">คืน</span></div>
-            </div>
-            <div class="card-body">
-                <h3 class="sitter-name">น้องบอส (Boss)</h3>
-                <div class="stats">
-                    <span><i class="fas fa-star rating"></i> 4.5 (4)</span>
-                    <span data-th="6 งานสำเร็จ" data-en="6 Jobs">6 งานสำเร็จ</span>
-                </div>
-                <p style="color:#555; font-size:0.9rem;" data-th="รับพาเดินเล่น พิกัดรัชดา" data-en="Dog walker in Ratchada">รับพาเดินเล่น พิกัดรัชดา</p>
-            </div>
+        <div class="filter-group">
+            <label>🐶 ประเภทบริการ</label>
+            <select id="serviceFilter" onchange="applyFilter()">
+                <option value="all">ทั้งหมด</option>
+                <option value="boarding">รับฝากเลี้ยง (Boarding)</option>
+                <option value="walking">พาเดินเล่น (Walking)</option>
+                <option value="grooming">อาบน้ำ/ตัดขน</option>
+            </select>
         </div>
+        <button class="btn-filter" onclick="applyFilter()">ค้นหา</button>
     </div>
+
+    <div class="card-grid" id="sitterGrid">
+        </div>
 </div>
 
 <script>
-    let isTH = true;
-    function toggleLang() {
-        isTH = !isTH;
-        document.querySelectorAll('[data-th]').forEach(el => {
-            el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+    // 1. ข้อมูลจำลอง (Mock Data) - แก้ไขเพิ่มลดตรงนี้ได้เลย
+    const sitters = [
+        {
+            id: 1,
+            name: "พี่จอย (Joy)",
+            location: "ลาดพร้าว",
+            img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80",
+            price: "350฿",
+            rating: 5,
+            reviews: 85,
+            verified: true,
+            services: ["boarding", "walking"],
+            desc: "รับฝากเลี้ยง 24 ชม. มีสนามหญ้ากว้าง"
+        },
+        {
+            id: 2,
+            name: "คุณเคน (Ken)",
+            location: "สยาม",
+            img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80",
+            price: "500฿",
+            rating: 4.8,
+            reviews: 42,
+            verified: true,
+            services: ["boarding", "grooming"],
+            desc: "คอนโดหรู ดูแลดี พร้อมบริการอาบน้ำ"
+        },
+        {
+            id: 3,
+            name: "น้องแนน (Nan)",
+            location: "บางนา",
+            img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80",
+            price: "150฿",
+            rating: 3.5,
+            reviews: 4,
+            verified: false,
+            services: ["walking"],
+            desc: "มือใหม่หารายได้เสริม รับพาเดินเล่นสวนรถไฟ"
+        },
+        {
+            id: 4,
+            name: "ลุงชาติ (Chart)",
+            location: "จตุจักร",
+            img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80",
+            price: "800฿",
+            rating: 4.9,
+            reviews: 210,
+            verified: true,
+            services: ["boarding", "training"],
+            desc: "รับฝากพร้อมฝึกสุนัข ประสบการณ์ 20 ปี"
+        },
+        {
+            id: 5,
+            name: "พี่ส้ม (Som)",
+            location: "ลาดพร้าว",
+            img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80",
+            price: "250฿",
+            rating: 4.2,
+            reviews: 15,
+            verified: true,
+            services: ["boarding"],
+            desc: "บ้านเดี่ยว อบอุ่นเหมือนคนในครอบครัว"
+        },
+        {
+            id: 6,
+            name: "น้องบีม (Beam)",
+            location: "บางนา",
+            img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=500&q=80",
+            price: "200฿",
+            rating: 2.5,
+            reviews: 2,
+            verified: false,
+            services: ["walking"],
+            desc: "รับงานครั้งแรกครับ ฝากตัวด้วยครับ"
+        }
+    ];
+
+    // 2. ฟังก์ชันสร้างดาว (Star Generator)
+    function getStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) stars += '<i class="fas fa-star star-gold"></i>';
+            else stars += '<i class="fas fa-star star-grey"></i>';
+        }
+        return stars;
+    }
+
+    // 3. ฟังก์ชันแสดงผลการ์ด (Render)
+    function renderSitters(data) {
+        const grid = document.getElementById('sitterGrid');
+        grid.innerHTML = ''; // เคลียร์ของเก่า
+
+        if(data.length === 0) {
+            grid.innerHTML = '<div style="text-align:center; width:100%; grid-column:1/-1; padding:50px; color:#888;">❌ ไม่พบพี่เลี้ยงในเงื่อนไขที่เลือก</div>';
+            return;
+        }
+
+        data.forEach(person => {
+            // สร้าง Tags บริการ
+            let tagsHtml = '';
+            if(person.services.includes('boarding')) tagsHtml += '<span class="service-tag highlight">🏠 รับฝาก</span>';
+            if(person.services.includes('walking')) tagsHtml += '<span class="service-tag">🐕 พาเดิน</span>';
+            if(person.services.includes('grooming')) tagsHtml += '<span class="service-tag">🛁 อาบน้ำ</span>';
+            if(person.services.includes('training')) tagsHtml += '<span class="service-tag">🎓 ฝึกสอน</span>';
+
+            const card = `
+                <div class="sitter-card" onclick="window.location.href='profile.html'">
+                    <div class="card-img-wrapper">
+                        <img src="${person.img}" class="card-img">
+                        <div class="price-badge">${person.price}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="header-row">
+                            <h3 class="sitter-name">
+                                ${person.name} 
+                                ${person.verified ? '<i class="fas fa-check-circle verified-icon" title="Verified"></i>' : ''}
+                            </h3>
+                        </div>
+                        <span class="location-text"><i class="fas fa-map-marker-alt"></i> ${person.location}</span>
+                        
+                        <div class="rating-box">
+                            ${getStars(person.rating)}
+                            <span style="color:#333; font-weight:bold;">${person.rating}</span>
+                            <span class="review-count">(${person.reviews} รีวิว)</span>
+                        </div>
+
+                        <p style="font-size:0.85rem; color:#666; margin-top:0; margin-bottom:15px; flex:1;">
+                            "${person.desc}"
+                        </p>
+
+                        <div class="tags-row">
+                            ${tagsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += card;
         });
     }
+
+    // 4. ฟังก์ชันกรองข้อมูล (Filter Logic)
+    function applyFilter() {
+        const loc = document.getElementById('locFilter').value;
+        const srv = document.getElementById('serviceFilter').value;
+
+        const filtered = sitters.filter(person => {
+            // เช็คสถานที่
+            const matchLoc = (loc === 'all') || (person.location === loc);
+            // เช็คบริการ
+            const matchSrv = (srv === 'all') || (person.services.includes(srv));
+            
+            return matchLoc && matchSrv;
+        });
+
+        renderSitters(filtered);
+    }
+
+    // เริ่มทำงานครั้งแรก (Show All)
+    renderSitters(sitters);
+
 </script>
 
 </body>
