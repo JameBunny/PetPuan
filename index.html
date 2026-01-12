@@ -5,66 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetPuan - หน้าแรก</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* CSS ส่วนกลาง (เหมือนกันทุกหน้า) */
         :root { --primary: #FF9F1C; --secondary: #2EC4B6; --dark: #2B2D42; --light: #F8F9FA; }
         body { font-family: 'Kanit', sans-serif; margin: 0; background: var(--light); color: var(--dark); }
-        a { text-decoration: none; color: inherit; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
         
-        /* Nav */
-        nav { background: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
-        .nav-menu a { margin-left: 20px; font-weight: 500; }
+        /* Navbar */
+        nav { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a:hover { color: var(--primary); }
+        
+        .lang-btn { cursor: pointer; border: 1px solid #ddd; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; }
+        .lang-btn span.active { font-weight: bold; color: var(--primary); }
+        
         .btn-reg { background: var(--dark); color: white; padding: 8px 20px; border-radius: 50px; }
-        
-        /* Hero */
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover; height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover; background-position: center; min-height: 80vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            color: white; text-align: center; padding: 20px;
         }
-        .hero h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        
-        /* Search Box */
-        .search-box { background: white; padding: 20px; border-radius: 15px; display: flex; gap: 10px; flex-wrap: wrap; width: 90%; max-width: 800px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .input-group { flex: 1; min-width: 150px; text-align: left; }
-        .input-group label { font-size: 0.9rem; color: #666; display: block; margin-bottom: 5px; }
-        .input-group input, .input-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Kanit'; box-sizing: border-box; }
-        .btn-search { background: var(--secondary); color: white; border: none; padding: 10px 30px; border-radius: 8px; font-family: 'Kanit'; cursor: pointer; font-size: 1.1rem; flex: 0 0 auto; margin-top: auto; height: 42px; }
-        
-        /* Mobile */
-        @media (max-width: 768px) { .nav-menu { display: none; } .hero h1 { font-size: 2rem; } .search-box { flex-direction: column; } .btn-search { width: 100%; } }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+
+        /* Search Box Responsive */
+        .search-box { 
+            background: white; padding: 25px; border-radius: 20px; 
+            display: flex; gap: 15px; width: 100%; max-width: 900px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            flex-wrap: wrap; 
+        }
+        .input-group { flex: 1; min-width: 200px; text-align: left; }
+        .input-group label { font-size: 0.9rem; color: #666; display: block; margin-bottom: 8px; font-weight: 500; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; font-size: 1rem; }
+        .btn-search { 
+            background: var(--secondary); color: white; border: none; padding: 10px 40px; 
+            border-radius: 10px; font-family: 'Kanit'; cursor: pointer; font-size: 1.1rem; 
+            flex: 0 0 auto; margin-top: auto; height: 48px; font-weight: 500;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); text-align: center; }
+            .nav-links.active { display: flex; }
+            .hamburger { display: block; }
+            .hero h1 { font-size: 2rem; }
+            .search-box { flex-direction: column; padding: 20px; }
+            .btn-search { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="logo"><i class="fas fa-paw"></i> PetPuan</a>
-    <div class="nav-menu">
-        <a href="search.html">ค้นหาพี่เลี้ยง</a>
-        <a href="register.html" class="btn-reg">สมัครเป็นพี่เลี้ยง</a>
+    <div class="nav-right">
+        <div class="lang-btn" onclick="toggleLang()">
+            <span id="l-th" class="active">TH</span> | <span id="l-en">EN</span>
+        </div>
+        <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')"><i class="fas fa-bars"></i></div>
+        <div class="nav-links">
+            <a href="search.html" data-th="ค้นหาพี่เลี้ยง" data-en="Find Sitter">ค้นหาพี่เลี้ยง</a>
+            <a href="register.html" class="btn-reg" data-th="สมัครพี่เลี้ยง" data-en="Become a Sitter">สมัครพี่เลี้ยง</a>
+        </div>
     </div>
 </nav>
 
 <div class="hero">
-    <h1>ฝาก 'เพื่อนซี้' ไว้กับเพื่อนบ้าน</h1>
-    <p>พี่เลี้ยงสัตว์เลี้ยงมืออาชีพ ใกล้บ้านคุณ พร้อมประกันภัยคุ้มครอง</p>
+    <h1 data-th="เพื่อนซี้ของคุณ เพื่อนบ้านดูแลให้" data-en="Your Best Friend, Our Best Care">เพื่อนซี้ของคุณ เพื่อนบ้านดูแลให้</h1>
+    <p data-th="แพลตฟอร์มฝากเลี้ยงสัตว์อันดับ 1 ที่ปลอดภัยและใกล้บ้าน" data-en="The #1 Trusted Neighborhood Pet Care Platform">แพลตฟอร์มฝากเลี้ยงสัตว์อันดับ 1 ที่ปลอดภัยและใกล้บ้าน</p>
     
     <div class="search-box">
         <div class="input-group">
-            <label>📍 พื้นที่ (เช่น ลาดพร้าว)</label>
-            <input type="text" placeholder="ระบุพิกัด...">
+            <label data-th="📍 พื้นที่ใกล้ฉัน" data-en="📍 Location">📍 พื้นที่ใกล้ฉัน</label>
+            <input type="text" placeholder="ลาดพร้าว, สยาม..." data-th="ระบุพื้นที่..." data-en="Enter location...">
         </div>
         <div class="input-group">
-            <label>🐶 ประเภทสัตว์</label>
+            <label data-th="🐶 ประเภทสัตว์" data-en="🐶 Pet Type">🐶 ประเภทสัตว์</label>
             <select>
-                <option>สุนัข (Dog)</option>
-                <option>แมว (Cat)</option>
+                <option data-th="สุนัข" data-en="Dog">สุนัข (Dog)</option>
+                <option data-th="แมว" data-en="Cat">แมว (Cat)</option>
             </select>
         </div>
-        <button class="btn-search" onclick="window.location.href='search.html'">ค้นหาเลย</button>
+        <button class="btn-search" onclick="window.location.href='search.html'" data-th="ค้นหาเลย" data-en="Search Now">ค้นหาเลย</button>
     </div>
 </div>
+
+<script>
+    // Script สลับภาษา (ใช้ร่วมกันได้ทุกไฟล์)
+    let isTH = true;
+    function toggleLang() {
+        isTH = !isTH;
+        document.getElementById('l-th').classList.toggle('active');
+        document.getElementById('l-en').classList.toggle('active');
+        
+        document.querySelectorAll('[data-th]').forEach(el => {
+            el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+            if(el.placeholder) el.placeholder = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+        });
+    }
+</script>
 
 </body>
 </html>
