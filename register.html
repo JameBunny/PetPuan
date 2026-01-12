@@ -3,66 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สมัครเป็นพี่เลี้ยง - PetPuan</title>
+    <title>สมัครพี่เลี้ยง - PetPuan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #FF9F1C; --line-green: #06C755; }
-        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        :root { --primary: #FF9F1C; --line: #06C755; }
+        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         
-        .card { background: white; width: 90%; max-width: 400px; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary); margin-bottom: 10px; display: inline-block; }
+        .card { background: white; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center; }
+        .logo { font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 10px; display: inline-block; text-decoration: none; }
         
-        h2 { margin-bottom: 5px; color: #333; }
-        p { color: #666; margin-bottom: 30px; }
+        h2 { margin: 10px 0 5px; color: #333; }
+        p { color: #666; margin-bottom: 30px; font-size: 0.95rem; }
         
-        /* ปุ่ม Login */
-        .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border: none; border-radius: 8px; font-family: 'Kanit'; font-size: 1rem; cursor: pointer; margin-bottom: 10px; transition: 0.2s; font-weight: bold; }
+        .btn-social { 
+            display: flex; align-items: center; justify-content: center; gap: 12px; 
+            width: 100%; padding: 14px; border: none; border-radius: 12px; 
+            font-family: 'Kanit'; font-size: 1rem; cursor: pointer; margin-bottom: 15px; 
+            transition: 0.2s; font-weight: 500; 
+        }
+        .btn-social:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         
-        .btn-line { background: var(--line-green); color: white; }
-        .btn-line:hover { background: #05b34c; }
-        
+        .btn-line { background: var(--line); color: white; }
         .btn-email { background: #333; color: white; }
-        .btn-email:hover { background: #000; }
         
-        /* Divider */
-        .divider { margin: 20px 0; border-top: 1px solid #ddd; position: relative; }
-        .divider span { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #888; font-size: 0.8rem; }
+        .divider { margin: 25px 0; border-top: 1px solid #eee; position: relative; }
+        .divider span { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #999; font-size: 0.8rem; }
         
-        /* Security Badge */
-        .security-note { background: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-top: 20px; display: flex; align-items: center; gap: 8px; text-align: left; }
+        .security-box { background: #E8F5E9; color: #2E7D32; padding: 15px; border-radius: 10px; font-size: 0.85rem; margin-top: 20px; text-align: left; display: flex; gap: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <a href="index.html" class="logo"><i class="fas fa-paw"></i> PetPuan</a>
-    <h2>สร้างรายได้จากความรัก</h2>
-    <p>สมัครเป็นพี่เลี้ยงวันนี้ กำหนดเวลาและราคาเองได้</p>
+    <h2 data-th="สร้างรายได้จากที่บ้าน" data-en="Earn Money from Home">สร้างรายได้จากที่บ้าน</h2>
+    <p data-th="สมัครเป็นพี่เลี้ยง กำหนดราคาและเวลาเองได้" data-en="Become a sitter. Set your own rates & schedule.">สมัครเป็นพี่เลี้ยง กำหนดราคาและเวลาเองได้</p>
     
-    <button class="btn-social btn-line" onclick="alert('เชื่อมต่อกับ LINE API...')">
-        <i class="fab fa-line" style="font-size: 1.5rem;"></i> สมัครด้วย LINE
+    <button class="btn-social btn-line" onclick="alert('เชื่อมต่อ LINE Login...')">
+        <i class="fab fa-line" style="font-size: 1.5rem;"></i> 
+        <span data-th="สมัครด้วย LINE" data-en="Continue with LINE">สมัครด้วย LINE</span>
     </button>
     
-    <button class="btn-social btn-email" onclick="alert('เปิดฟอร์มกรอก Email...')">
-        <i class="fas fa-envelope"></i> สมัครด้วย Email
+    <button class="btn-social btn-email" onclick="alert('เปิดฟอร์ม Email...')">
+        <i class="fas fa-envelope"></i> 
+        <span data-th="สมัครด้วย Email" data-en="Continue with Email">สมัครด้วย Email</span>
     </button>
     
-    <div class="divider"><span>ขั้นตอนความปลอดภัย</span></div>
+    <div class="divider"><span data-th="หรือ" data-en="OR">หรือ</span></div>
     
-    <div style="text-align: left; font-size: 0.9rem; color: #555;">
-        <div style="margin-bottom: 10px;">
-            <i class="fas fa-id-card" style="color:var(--primary);"></i> <b>ยืนยันตัวตน:</b> ต้องใช้บัตรประชาชน
-        </div>
-        <div style="margin-bottom: 10px;">
-            <i class="fas fa-home" style="color:var(--primary);"></i> <b>ตรวจสอบที่พัก:</b> ต้องมีรูปถ่ายสถานที่จริง
-        </div>
+    <div style="text-align: left; font-size: 0.9rem; color: #555; line-height: 1.6;">
+        ✅ <strong data-th="ยืนยันตัวตน" data-en="Identity Verify">ยืนยันตัวตน</strong> (ID Card)<br>
+        ✅ <strong data-th="ตรวจสอบที่พัก" data-en="Home Check">ตรวจสอบที่พัก</strong> (Photo Check)
     </div>
 
-    <div class="security-note">
-        <i class="fas fa-shield-alt"></i> ข้อมูลของคุณจะถูกเก็บเป็นความลับ ตามมาตรฐาน PDPA
+    <div class="security-box">
+        <i class="fas fa-shield-alt" style="font-size: 1.2rem; margin-top: 2px;"></i>
+        <span data-th="ข้อมูลของคุณปลอดภัย 100% ตามมาตรฐาน PDPA" data-en="Your data is 100% secure (PDPA Standard).">ข้อมูลของคุณปลอดภัย 100% ตามมาตรฐาน PDPA</span>
     </div>
 </div>
+
+<script>
+    // ใส่ Script สลับภาษา (Copy จาก index.html) เพื่อให้หน้านี้สลับภาษาได้ด้วย
+    let isTH = true;
+    function toggleLang() { /* ... */ }
+</script>
 
 </body>
 </html>
