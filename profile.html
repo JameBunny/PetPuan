@@ -22,7 +22,7 @@
         .details-box { background: white; margin-top: 20px; padding: 25px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
         .details-box h3 { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 0; }
         
-        /* Sticky Booking Footer for Mobile */
+        /* Sticky Booking Footer */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
             background: white; padding: 15px 20px; 
@@ -74,6 +74,16 @@
     </div>
     <button class="btn-book" onclick="alert('ระบบเปิด QR Code Payment...')" data-th="จองเลย" data-en="Book Now">จองเลย</button>
 </div>
+
+<script>
+    let isTH = true;
+    function toggleLang() {
+        isTH = !isTH;
+        document.querySelectorAll('[data-th]').forEach(el => {
+            el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
+        });
+    }
+</script>
 
 </body>
 </html>
