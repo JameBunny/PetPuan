@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetPuan - ค้นหาพี่เลี้ยง</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #FF9F1C; --verified: #1DA1F2; --light: #F8F9FA; }
+        body { font-family: 'Kanit', sans-serif; background: var(--light); margin: 0; }
+        
+        nav { background: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-decoration: none; }
+        
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Card Styling */
+        .sitter-card { background: white; border-radius: 12px; padding: 20px; display: flex; gap: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; position: relative; }
+        .sitter-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        
+        .sitter-img { width: 120px; height: 120px; border-radius: 10px; object-fit: cover; }
+        .sitter-info { flex: 1; }
+        
+        .name-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .sitter-name { margin: 0; font-size: 1.2rem; font-weight: bold; }
+        .verified-badge { color: var(--verified); font-size: 1.1rem; }
+        
+        .stats { display: flex; gap: 15px; font-size: 0.9rem; color: #666; margin: 10px 0; }
+        .rating { color: #FFC107; font-weight: bold; }
+        
+        .price-tag { position: absolute; top: 20px; right: 20px; font-weight: bold; color: var(--primary); font-size: 1.2rem; }
+        
+        @media (max-width: 600px) { .sitter-card { flex-direction: column; } .sitter-img { width: 100%; height: 200px; } .price-tag { position: relative; top: 0; right: 0; text-align: right; margin-bottom: 10px; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo"><i class="fas fa-paw"></i> PetPuan</a>
+</nav>
+
+<div class="container">
+    <h2>ผลการค้นหา: ลาดพร้าว</h2>
+    
+    <div class="sitter-card" onclick="window.location.href='profile.html'">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" class="sitter-img">
+        <div class="sitter-info">
+            <div class="price-tag">350฿ / คืน</div>
+            <div class="name-row">
+                <h3 class="sitter-name">พี่จอย (ห้วยขวาง)</h3>
+                <i class="fas fa-check-circle verified-badge" title="Verified Pro"></i>
+            </div>
+            <div class="stats">
+                <span><i class="fas fa-star rating"></i> 4.9 (85 รีวิว)</span>
+                <span><i class="fas fa-briefcase"></i> 120 งานสำเร็จ</span>
+            </div>
+            <p style="color: #555; font-size: 0.9rem;">"ดูแลดีมาก มีสนามหญ้าหน้าบ้าน น้องหมาวิ่งเล่นได้เต็มที่ค่ะ"</p>
+        </div>
+    </div>
+
+    <div class="sitter-card" onclick="window.location.href='profile.html'">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="sitter-img">
+        <div class="sitter-info">
+            <div class="price-tag">250฿ / คืน</div>
+            <div class="name-row">
+                <h3 class="sitter-name">น้องบอส (รัชดา)</h3>
+            </div>
+            <div class="stats">
+                <span><i class="fas fa-star rating"></i> 4.5 (4 รีวิว)</span>
+                <span><i class="fas fa-briefcase"></i> 6 งานสำเร็จ</span>
+            </div>
+            <p style="color: #555; font-size: 0.9rem;">"มือใหม่หัดรับงานครับ รักหมามาก พาเดินเล่นได้ครับ"</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
