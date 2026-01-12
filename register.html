@@ -8,9 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #FF9F1C; --line: #06C755; }
-        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         
-        .card { background: white; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center; }
+        .card { background: white; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center; position: relative; }
         .logo { font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 10px; display: inline-block; text-decoration: none; }
         
         h2 { margin: 10px 0 5px; color: #333; }
@@ -31,11 +31,22 @@
         .divider span { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #999; font-size: 0.8rem; }
         
         .security-box { background: #E8F5E9; color: #2E7D32; padding: 15px; border-radius: 10px; font-size: 0.85rem; margin-top: 20px; text-align: left; display: flex; gap: 10px; }
+
+        /* ✅ เพิ่มสไตล์ปุ่มสลับภาษา */
+        .lang-switch { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 0.9rem; color: #999; border: 1px solid #ddd; padding: 5px 10px; border-radius: 20px; }
+        .lang-switch span.active { color: var(--primary); font-weight: bold; }
+
+        /* ✅ เพิ่มสไตล์ Footer เล็กๆ */
+        .footer-small { margin-top: 20px; color: #999; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <div class="card">
+    <div class="lang-switch" onclick="toggleLang()">
+        <span id="l-th" class="active">TH</span> | <span id="l-en">EN</span>
+    </div>
+
     <a href="index.html" class="logo"><i class="fas fa-paw"></i> PetPuan</a>
     <h2 data-th="สร้างรายได้จากที่บ้าน" data-en="Earn Money from Home">สร้างรายได้จากที่บ้าน</h2>
     <p data-th="สมัครเป็นพี่เลี้ยง กำหนดราคาและเวลาเองได้" data-en="Become a sitter. Set your own rates & schedule.">สมัครเป็นพี่เลี้ยง กำหนดราคาและเวลาเองได้</p>
@@ -65,10 +76,19 @@
     </div>
 </div>
 
+<div class="footer-small">
+    © 2026 PetPuan Thailand. All rights reserved.
+</div>
+
 <script>
     let isTH = true;
     function toggleLang() {
         isTH = !isTH;
+        // สลับสีตัวหนังสือปุ่ม
+        if(document.getElementById('l-th')) document.getElementById('l-th').classList.toggle('active');
+        if(document.getElementById('l-en')) document.getElementById('l-en').classList.toggle('active');
+
+        // สลับภาษาเนื้อหา
         document.querySelectorAll('[data-th]').forEach(el => {
             el.innerText = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
             if(el.placeholder) el.placeholder = isTH ? el.getAttribute('data-th') : el.getAttribute('data-en');
