@@ -3,166 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบพี่เลี้ยง - PetPuan</title>
+    <title>Dashboard พี่เลี้ยง</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #FF9F1C; --success: #2EC4B6; --dark: #2B2D42; --danger: #FF4757; }
-        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 80px; }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <style>
+        :root { --primary: #FF9F1C; --success: #2EC4B6; --dark: #2B2D42; --danger: #FF4757; --grey: #ccc; }
+        body { font-family: 'Kanit', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 90px; }
 
-        .header { background: var(--dark); padding: 20px; color: white; border-radius: 0 0 20px 20px; display: flex; align-items: center; gap: 15px; position: relative; }
-        .profile-img { width: 60px; height: 60px; border-radius: 50%; background: #ddd; border: 2px solid white; object-fit: cover; }
+        /* --- Header --- */
+        .header { background: var(--dark); padding: 25px 20px 40px; color: white; border-radius: 0 0 30px 30px; display: flex; align-items: center; gap: 15px; position: relative; }
+        .profile-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid white; object-fit: cover; }
         .user-info h2 { margin: 0; font-size: 1.2rem; }
         .user-info p { margin: 0; font-size: 0.9rem; opacity: 0.8; }
-        .status-badge { background: var(--success); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; margin-left: 5px; vertical-align: middle; }
+        
+        /* --- Container --- */
+        .container { padding: 0 20px; max-width: 600px; margin: -30px auto 0; position: relative; }
 
-        /* Notification Bell */
-        .noti-icon { position: absolute; right: 20px; top: 25px; font-size: 1.5rem; color: white; cursor: pointer; }
-        .noti-badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; border: 2px solid var(--dark); }
+        /* --- Status Toggle (ปุ่มเปิดปิดงาน) --- */
+        .status-card { background: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .toggle-switch { position: relative; width: 50px; height: 26px; border-radius: 20px; background: var(--grey); cursor: pointer; transition: 0.3s; }
+        .toggle-switch::after { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        /* Active State */
+        .toggle-switch.active { background: var(--success); }
+        .toggle-switch.active::after { left: 26px; }
 
-        .container { padding: 20px; max-width: 600px; margin: 0 auto; }
-
-        .switch-wrapper { display: flex; align-items: center; justify-content: space-between; background: white; padding: 15px 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .toggle-btn { width: 50px; height: 26px; background: var(--success); border-radius: 50px; position: relative; cursor: pointer; }
-        .toggle-btn::after { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 2px; right: 2px; }
-
+        /* --- Stats Grid --- */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .stat-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .stat-card h3 { margin: 0; font-size: 2rem; color: var(--primary); }
-        .stat-card.alert h3 { color: var(--danger); animation: pulse 2s infinite; } /* เอฟเฟกต์กระพริบ */
+        .stat-card h3 { margin: 0; font-size: 1.8rem; color: var(--primary); }
         .stat-card p { margin: 5px 0 0; color: #666; font-size: 0.9rem; }
 
-        /* Job Request Card (งานใหม่) */
-        .job-request { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border-left: 5px solid var(--danger); box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; /* ซ่อนไว้ก่อน เดี๋ยวใช้ JS เปิด */ }
-        .job-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .job-title { font-weight: bold; font-size: 1.1rem; color: #333; }
-        .time-ago { font-size: 0.8rem; color: #999; }
-        
-        .job-details { display: flex; gap: 15px; margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 10px; }
-        .pet-img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
-        
-        .btn-group { display: flex; gap: 10px; }
-        .btn-accept { flex: 1; background: var(--success); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-decline { flex: 1; background: #eee; color: #666; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
+        /* --- House Gallery (รูปบ้าน) --- */
+        .gallery-section { margin-bottom: 20px; }
+        .section-title { font-size: 1rem; font-weight: bold; margin-bottom: 10px; color: #444; }
+        .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+        .gallery-img { width: 120px; height: 90px; border-radius: 10px; object-fit: cover; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        /* Menu */
-        .menu-list { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .menu-item { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; color: #333; text-decoration: none; transition: 0.2s; }
-        .menu-item:hover { background: #f9f9f9; }
-        .menu-item:last-child { border-bottom: none; }
+        /* --- Job Request (งานเข้า) --- */
+        .job-card { background: white; border-radius: 15px; padding: 20px; border-left: 5px solid var(--danger); box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; animation: slideUp 0.5s; }
+        .btn-accept { width: 100%; background: var(--success); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 1rem; }
+        .btn-accept:active { transform: scale(0.98); }
+
+        /* --- Menu List --- */
+        .menu-list { background: white; border-radius: 15px; margin-top: 20px; overflow: hidden; }
+        .menu-item { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; color: #333; text-decoration: none; }
+
+        /* --- Modal (หน้าต่างแก้ไข) --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-content { background: white; width: 90%; max-width: 400px; padding: 25px; border-radius: 20px; position: relative; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-save { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; }
 
         /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; }
         .nav-item { text-align: center; color: #999; font-size: 0.8rem; text-decoration: none; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img id="profilePicture" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="profile-img">
+        <img id="displayImg" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="profile-img">
         <div class="user-info">
-            <h2 id="displayName">สวัสดี, คุณพี่เลี้ยง <span class="status-badge">ยืนยันแล้ว</span></h2>
-            <p>พร้อมรับงานวันนี้</p>
-        </div>
-        <div class="noti-icon" onclick="alert('คุณมีงานใหม่เข้ามาเมื่อ 2 นาทีที่แล้ว!')">
-            <i class="fas fa-bell"></i>
-            <div class="noti-badge" id="notiBadge" style="display:none;">1</div>
+            <h2 id="displayName">พี่เลี้ยง (Guest)</h2>
+            <p><i class="fas fa-map-marker-alt"></i> <span id="displayLoc">กรุงเทพฯ</span></p>
         </div>
     </div>
 
     <div class="container">
-        <div class="switch-wrapper">
-            <span>🟢 สถานะรับงาน</span>
-            <div class="toggle-btn" onclick="alert('ปิดรับงานชั่วคราวแล้ว')"></div>
+        <div class="status-card">
+            <span id="statusText" style="font-weight:bold; color:var(--grey);">🔴 ปิดรับงาน</span>
+            <div class="toggle-switch" id="statusSwitch" onclick="toggleStatus()"></div>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card alert">
+            <div class="stat-card">
                 <h3 id="jobCount">0</h3>
-                <p>งานที่รอรับ</p>
+                <p>งานที่ทำสำเร็จ</p>
             </div>
             <div class="stat-card">
-                <h3>฿0</h3>
-                <p>รายได้วันนี้</p>
+                <h3>฿<span id="incomeCount">0</span></h3>
+                <p>รายได้รวม</p>
             </div>
         </div>
 
-        <div class="job-request" id="newJobCard">
-            <div class="job-header">
-                <span class="job-title">🔥 งานด่วน: ฝากเลี้ยงน้องหมา</span>
-                <span class="time-ago">2 นาทีที่แล้ว</span>
+        <div class="gallery-section">
+            <div class="section-title">🏠 พื้นที่รับเลี้ยงและบ้านของฉัน</div>
+            <div class="gallery-scroll">
+                <img src="https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&w=200&q=80" class="gallery-img">
+                <img src="https://images.unsplash.com/photo-1599388174483-e02fb8052140?auto=format&fit=crop&w=200&q=80" class="gallery-img">
+                <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=200&q=80" class="gallery-img">
+                <img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7c1f?auto=format&fit=crop&w=200&q=80" class="gallery-img">
             </div>
-            <div class="job-details">
-                <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=100&q=80" class="pet-img">
-                <div style="font-size: 0.9rem;">
-                    <strong>น้องไข่ตุ๋น (Bulldog)</strong><br>
-                    <span style="color:#666;">ฝาก 2 คืน • รวมอาหาร</span><br>
-                    <span style="color:var(--primary); font-weight:bold;">฿700</span>
+        </div>
+
+        <div class="job-card" id="jobAlert">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <strong>🔥 งานด่วน! ฝากเลี้ยง 2 วัน</strong>
+                <span style="color:#999; font-size:0.8rem;">เมื่อกี้</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; background:#f9f9f9; padding:10px; border-radius:10px;">
+                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=100&q=80" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+                <div>
+                    <div>น้องกะทิ (Beagle)</div>
+                    <div style="color:var(--primary); font-weight:bold;">ค่าตอบแทน ฿800</div>
                 </div>
             </div>
-            <div class="btn-group">
-                <button class="btn-decline" onclick="hideJob()">ปฏิเสธ</button>
-                <button class="btn-accept" onclick="alert('รับงานสำเร็จ! ระบบจะส่งพิกัดบ้านลูกค้าให้ทาง LINE')">รับงาน</button>
-            </div>
+            <button class="btn-accept" onclick="acceptJob()">✅ รับงานทันที</button>
         </div>
 
         <div class="menu-list">
-            <a href="#" class="menu-item">
-                <span><i class="fas fa-edit"></i> แก้ไขโปรไฟล์</span>
+            <div class="menu-item" onclick="openEditModal()">
+                <span><i class="fas fa-edit" style="color:var(--primary); width:25px;"></i> แก้ไขโปรไฟล์</span>
                 <i class="fas fa-chevron-right" style="color:#ccc;"></i>
-            </a>
-            <a href="#" class="menu-item">
-                <span><i class="fas fa-wallet"></i> กระเป๋าเงิน</span>
+            </div>
+            <div class="menu-item">
+                <span><i class="fas fa-history" style="color:var(--success); width:25px;"></i> ประวัติการทำงาน</span>
                 <i class="fas fa-chevron-right" style="color:#ccc;"></i>
+            </div>
+            <a href="index.html" class="menu-item" style="color:var(--danger);">
+                <span><i class="fas fa-sign-out-alt" style="width:25px;"></i> ออกจากระบบ</span>
             </a>
-            <a href="index.html" class="menu-item" style="color:red;">
-                <span><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</span>
-            </a>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <h3 style="margin-top:0;">✏️ แก้ไขข้อมูลส่วนตัว</h3>
+            
+            <div class="form-group">
+                <label>ชื่อที่ใช้แสดง</label>
+                <input type="text" id="inputName" placeholder="เช่น พี่จอย รักสัตว์">
+            </div>
+            <div class="form-group">
+                <label>สถานที่/เขต</label>
+                <input type="text" id="inputLoc" placeholder="เช่น ลาดพร้าว">
+            </div>
+            <div class="form-group">
+                <label>อัปโหลดรูปบ้าน (เพิ่มรูป)</label>
+                <button style="width:100%; padding:10px; border:1px dashed #ccc; background:white; color:#666; border-radius:8px;" onclick="Swal.fire('จำลองการอัปโหลด', 'ระบบจะเปิดคลังภาพในเครื่อง', 'info')">
+                    <i class="fas fa-camera"></i> เลือกรูปภาพ
+                </button>
+            </div>
+            
+            <button class="btn-save" onclick="saveProfile()">บันทึกข้อมูล</button>
         </div>
     </div>
 
     <div class="bottom-nav">
         <a href="#" class="nav-item active"><i class="fas fa-home"></i> หน้าหลัก</a>
-        <a href="#" class="nav-item"><i class="fas fa-clipboard-list"></i> งานของฉัน</a>
-        <a href="#" class="nav-item"><i class="fas fa-bell"></i> แจ้งเตือน</a>
+        <a href="#" class="nav-item"><i class="fas fa-calendar-alt"></i> ตารางงาน</a>
+        <a href="#" class="nav-item"><i class="fas fa-comment-dots"></i> แชท</a>
     </div>
 
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        async function main() {
-            // ส่วนของ LINE Login
-            await liff.init({ liffId: "2008873687-FSXDQJEA" }); 
-            if (liff.isLoggedIn()) {
-                const profile = await liff.getProfile();
-                document.getElementById('displayName').innerHTML = 'สวัสดี, ' + profile.displayName + ' <span class="status-badge">ยืนยันแล้ว</span>';
-                document.getElementById('profilePicture').src = profile.pictureUrl;
+        // --- 1. โหลดข้อมูลเมื่อเปิดหน้าเว็บ ---
+        document.addEventListener("DOMContentLoaded", function() {
+            loadProfile(); // ดึงข้อมูลชื่อ/สถานะจากความจำเครื่อง
+            
+            // จำลองงานเด้งเข้า (ถ้าสถานะเปิดอยู่)
+            setTimeout(() => {
+                if(localStorage.getItem('isOnline') === 'true') {
+                    document.getElementById('jobAlert').style.display = 'block';
+                    // สั่นเตือน
+                    if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1500);
+
+            // เริ่มต้น LIFF (เพื่อดึงรูปโปรไฟล์จริงถ้ามี)
+            initializeLiff();
+        });
+
+        // --- 2. ฟังก์ชันเปิด-ปิดรับงาน (จำสถานะได้จริง) ---
+        function toggleStatus() {
+            const btn = document.getElementById('statusSwitch');
+            const txt = document.getElementById('statusText');
+            
+            btn.classList.toggle('active');
+            
+            if (btn.classList.contains('active')) {
+                txt.innerHTML = '<span style="color:var(--success)">🟢 เปิดรับงานอยู่</span>';
+                localStorage.setItem('isOnline', 'true');
+                
+                // แจ้งเตือนสวยๆ
+                Swal.fire({
+                    icon: 'success',
+                    title: 'เปิดระบบแล้ว',
+                    text: 'คุณพร้อมรับงาน! ระบบจะแจ้งเตือนเมื่อมีลูกค้า',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                txt.innerHTML = '<span style="color:var(--grey)">🔴 ปิดรับงาน</span>';
+                localStorage.setItem('isOnline', 'false');
+                document.getElementById('jobAlert').style.display = 'none'; // ซ่อนงานถ้าปิด
+            }
+        }
+
+        // --- 3. ฟังก์ชันรับงาน (กดแล้วส่งไลน์จริง) ---
+        async function acceptJob() {
+            // ซ่อนการ์ดงาน
+            document.getElementById('jobAlert').style.display = 'none';
+            
+            // เพิ่มตัวเลขงานและรายได้ (จำลอง)
+            let jobs = parseInt(document.getElementById('jobCount').innerText) + 1;
+            let income = parseInt(document.getElementById('incomeCount').innerText) + 800;
+            document.getElementById('jobCount').innerText = jobs;
+            document.getElementById('incomeCount').innerText = income;
+
+            // แจ้งเตือนว่ารับงานแล้ว
+            Swal.fire({
+                icon: 'success',
+                title: 'รับงานสำเร็จ!',
+                text: 'กำลังส่งข้อมูลยืนยันไปยังห้องแชท...',
+                showConfirmButton: false,
+                timer: 2000
+            });
+
+            // *** ทีเด็ด: ส่งข้อความเข้า LINE Chat จริงๆ ***
+            // (ต้องเปิดหน้านี้ผ่าน LIFF ถึงจะทำงาน)
+            if (liff.isInClient()) {
+                try {
+                    await liff.sendMessages([
+                        {
+                            type: 'text',
+                            text: '✅ ฉันกดรับงาน "น้องกะทิ" แล้วนะ! \nพร้อมเริ่มงานตามเวลาที่นัดหมายครับ'
+                        },
+                        {
+                            type: 'sticker',
+                            packageId: '446',
+                            stickerId: '1988'
+                        }
+                    ]);
+                    console.log('Message sent');
+                } catch (err) {
+                    console.log('Error sending message:', err);
+                }
+            }
+        }
+
+        // --- 4. ระบบแก้ไขโปรไฟล์ (บันทึกได้จริง) ---
+        function loadProfile() {
+            // ดึงข้อมูลจาก LocalStorage
+            const savedName = localStorage.getItem('sitterName');
+            const savedLoc = localStorage.getItem('sitterLoc');
+            const isOnline = localStorage.getItem('isOnline');
+
+            if(savedName) document.getElementById('displayName').innerText = savedName;
+            if(savedLoc) document.getElementById('displayLoc').innerText = savedLoc;
+
+            // คืนค่าสถานะเปิด-ปิดงาน
+            if(isOnline === 'true') {
+                document.getElementById('statusSwitch').classList.add('active');
+                document.getElementById('statusText').innerHTML = '<span style="color:var(--success)">🟢 เปิดรับงานอยู่</span>';
+            }
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('inputName').value;
+            const loc = document.getElementById('inputLoc').value;
+
+            if(name) {
+                document.getElementById('displayName').innerText = name;
+                localStorage.setItem('sitterName', name);
+            }
+            if(loc) {
+                document.getElementById('displayLoc').innerText = loc;
+                localStorage.setItem('sitterLoc', loc);
             }
 
-            // --- ส่วนจำลองการแจ้งเตือนงานเข้า (Demo Trick) ---
-            setTimeout(() => {
-                // 1. แสดงตัวเลขแจ้งเตือนที่กระดิ่ง
-                document.getElementById('notiBadge').style.display = 'flex';
-                // 2. เปลี่ยนเลขงานรอรับเป็น 1
-                document.getElementById('jobCount').innerText = '1';
-                // 3. แสดงการ์ดงาน
-                document.getElementById('newJobCard').style.display = 'block';
-                // 4. สั่นเตือน (เฉพาะมือถือบางรุ่น)
-                if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
-            }, 1000); // ดีเลย์ 1 วินาทีหลังจากโหลดหน้าเสร็จ ให้เหมือนโหลดข้อมูลมา
+            closeEditModal();
+            Swal.fire('บันทึกสำเร็จ', 'ข้อมูลของคุณอัปเดตแล้ว', 'success');
         }
 
-        function hideJob() {
-            document.getElementById('newJobCard').style.display = 'none';
-            document.getElementById('jobCount').innerText = '0';
-            document.getElementById('notiBadge').style.display = 'none';
+        function openEditModal() {
+            document.getElementById('editModal').style.display = 'flex';
+            // ใส่ค่าเดิมลงในช่อง
+            document.getElementById('inputName').value = document.getElementById('displayName').innerText;
         }
 
-        main();
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // --- LIFF Init ---
+        async function initializeLiff() {
+            try {
+                await liff.init({ liffId: "2008873687-FSXDQJEA" }); // ใส่ ID เดิมของคุณ
+                if (liff.isLoggedIn()) {
+                    const profile = await liff.getProfile();
+                    // ถ้ายังไม่ได้ตั้งชื่อเอง ให้ใช้ชื่อไลน์
+                    if(!localStorage.getItem('sitterName')) {
+                        document.getElementById('displayName').innerText = profile.displayName;
+                    }
+                    document.getElementById('displayImg').src = profile.pictureUrl;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
     </script>
-
 </body>
 </html>
